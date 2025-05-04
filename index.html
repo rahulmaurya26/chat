@@ -25,10 +25,13 @@
 <body>
     <div class="container mt-4">
         <h2 class="text-center">Live Chat</h2>
-        <ul id="messages" class="list-group mb-3"></ul>
+        <ul id="messages" class="list-group mb-3" ></ul>
         <form id="chat-form" class="input-group">
             <input id="m" autocomplete="off" class="form-control" placeholder="Type a message..." />
             <button class="btn btn-primary">Send</button>
+        </form>
+        <form id="u" class="input-group">
+            <input id="n" type="hidden" value="Connected">
         </form>
     </div>
 
@@ -36,15 +39,28 @@
     <script>
         const socket = io();
         let username = '';
+        let ob = '';
+
+
+        const u = document.getElementById('u');
+        const inputs = document.getElementById('n');
+        const messages = document.getElementById('messages');
 
         // Prompt for username
         while (!username) {
             username = prompt("Enter your name:");
+            call(username);
+
+            
+        }
+        function call(ob){
+            socket.emit('chat message', { user: ob, text: inputs.value });
+
         }
 
         const form = document.getElementById('chat-form');
         const input = document.getElementById('m');
-        const messages = document.getElementById('messages');
+
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
